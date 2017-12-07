@@ -7,7 +7,7 @@
 resource_name = "Bullet.gd"
 script/source = "extends Area2D
 
-var SPEED = 500
+var SPEED = 900
 
 func _ready():
 	set_process(true)
