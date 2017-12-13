@@ -12,15 +12,26 @@ var velocity = Vector2()
 var FLOOR_SPEED = 200
 var AIR_SPEED = 150
 var JUMP = 500
-var bullet_scene = preload(\"res://Object/Bullet.tscn\")
+var curr_weapon = 0
+var weapons = []
 
 func _ready():
 	set_physics_process(true)
 	set_process_input(true)
+	set_process(true)
+	pass
+
+func _process(delta):
+	set_weapon()
 	pass
 
 func _physics_process(delta):
 	move(delta)
+	pass
+
+func set_weapon():
+	if !weapons.empty():
+		weapons[curr_weapon].global_position = get_node(\"GunPos\").global_position
 	pass
 
 func move(delta):
@@ -39,10 +50,13 @@ func _input(event):
 	#JUMP
 	if (event.is_action(\"ui_up\") and event.is_pressed() and !event.is_echo() and is_on_floor()):
 		velocity.y = -JUMP
-	if (event.is_action(\"shoot\") and event.is_pressed() and !event.is_echo()):
-		var bullet = bullet_scene.instance()
-		get_tree().get_root().add_child(bullet)
-		bullet.global_position = get_node(\"ShootPos\").global_position
+	if (event.is_action(\"shoot\") and event.is_pressed() and !weapons.empty()):
+		weapons[curr_weapon].shoot()
+	pass
+
+func add_weapon(weap):
+	weapons.append(weap)
+	get_node(\"GunPos\").add_child(weap)
 	pass"
 
 [sub_resource type="CapsuleShape2D" id=2]
@@ -51,7 +65,9 @@ custom_solver_bias = 0.0
 radius = 22.2194
 height = 20.0
 
-[node name="Player" type="KinematicBody2D"]
+[node name="Player" type="KinematicBody2D" groups=[
+"player",
+]]
 
 input_pickable = false
 collision_layer = 1
@@ -90,8 +106,8 @@ editor_draw_screen = true
 editor_draw_limits = false
 editor_draw_drag_margin = false
 
-[node name="ShootPos" type="Position2D" parent="."]
+[node name="GunPos" type="Position2D" parent="."]
 
-position = Vector2( 39.0036, -4.75654 )
+position = Vector2( 34.9605, -1.66479 )
 
 
