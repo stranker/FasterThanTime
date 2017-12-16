@@ -32,6 +32,8 @@ func _physics_process(delta):
 func set_weapon():
 	if !weapons.empty():
 		weapons[curr_weapon].global_position = get_node(\"GunPos\").global_position
+		get_node(\"GUI/H/Weapon\").texture = weapons[curr_weapon].get_texture()
+		get_node(\"GUI/H/Label\").text = str(weapons[curr_weapon].clip)+\"/\"+str(weapons[curr_weapon].magazine)
 	pass
 
 func move(delta):
@@ -52,6 +54,8 @@ func _input(event):
 		velocity.y = -JUMP
 	if (event.is_action(\"shoot\") and event.is_pressed() and !weapons.empty()):
 		weapons[curr_weapon].shoot()
+	if (event.is_action(\"reload\") and event.is_pressed() and !weapons.empty()):
+		weapons[curr_weapon].reload()
 	pass
 
 func add_weapon(weap):
@@ -109,5 +113,64 @@ editor_draw_drag_margin = false
 [node name="GunPos" type="Position2D" parent="."]
 
 position = Vector2( 34.9605, -1.66479 )
+
+[node name="GUI" type="CanvasLayer" parent="."]
+
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+
+[node name="H" type="HBoxContainer" parent="GUI"]
+
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -50.0
+margin_top = -50.0
+margin_right = -10.0
+margin_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+
+[node name="Weapon" type="TextureRect" parent="GUI/H"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_bottom = 40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="Label" type="Label" parent="GUI/H"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 4.0
+margin_top = 13.0
+margin_right = 32.0
+margin_bottom = 27.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "TEST"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 
