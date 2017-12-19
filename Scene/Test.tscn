@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://Actor/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Actor/Enemy.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Object/Pistol.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Object/M4A4.tscn" type="PackedScene" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -14,7 +15,6 @@ extents = Vector2( 31.9703, 32.0164 )
 
 [node name="Piso" type="StaticBody2D" parent="."]
 
-editor/display_folded = true
 position = Vector2( 1923.65, 533.598 )
 scale = Vector2( 60.113, 1 )
 input_pickable = false
@@ -117,6 +117,10 @@ position = Vector2( 2842.5, 450.481 )
 
 [node name="Pistol" parent="." instance=ExtResource( 4 )]
 
-position = Vector2( 226.504, 472.926 )
+position = Vector2( 199.359, 455.438 )
+
+[node name="M4A4" parent="." instance=ExtResource( 5 )]
+
+position = Vector2( 351.794, 262.698 )
 
 

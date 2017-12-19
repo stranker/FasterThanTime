@@ -34,6 +34,8 @@ func set_weapon():
 		weapons[curr_weapon].global_position = get_node(\"GunPos\").global_position
 		get_node(\"GUI/H/Weapon\").texture = weapons[curr_weapon].get_texture()
 		get_node(\"GUI/H/Label\").text = str(weapons[curr_weapon].clip)+\"/\"+str(weapons[curr_weapon].magazine)
+		if(Input.is_action_pressed(\"shoot\")):
+			weapons[curr_weapon].shoot()
 	pass
 
 func move(delta):
@@ -52,8 +54,8 @@ func _input(event):
 	#JUMP
 	if (event.is_action(\"ui_up\") and event.is_pressed() and !event.is_echo() and is_on_floor()):
 		velocity.y = -JUMP
-	if (event.is_action(\"shoot\") and event.is_pressed() and !weapons.empty()):
-		weapons[curr_weapon].shoot()
+	#if (event.is_action(\"shoot\") and event.is_pressed() and !weapons.empty()):
+	#	weapons[curr_weapon].shoot()
 	if (event.is_action(\"reload\") and event.is_pressed() and !weapons.empty()):
 		weapons[curr_weapon].reload()
 	pass
@@ -152,6 +154,7 @@ rect_clip_content = false
 mouse_filter = 1
 size_flags_horizontal = 1
 size_flags_vertical = 1
+stretch_mode = 0
 
 [node name="Label" type="Label" parent="GUI/H"]
 

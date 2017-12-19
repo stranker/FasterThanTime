@@ -6,6 +6,8 @@ var clip = magazine
 var taken = false
 var player = null
 var texture = null
+var accuracy = 0
+
 
 func _ready():
 	pass
@@ -45,6 +47,12 @@ func get_canShoot():
 
 func set_canShoot(b):
 	canShoot = b
+
+func get_accuracy():
+	return accuracy
+
+func set_accuracy(cant):
+	accuracy = cant
 
 func shoot():
 	pass
