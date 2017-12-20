@@ -117,10 +117,10 @@ position = Vector2( 2842.5, 450.481 )
 
 [node name="Pistol" parent="." instance=ExtResource( 4 )]
 
-position = Vector2( 199.359, 455.438 )
+position = Vector2( 501.359, 449.438 )
 
 [node name="M4A4" parent="." instance=ExtResource( 5 )]
 
-position = Vector2( 351.794, 262.698 )
+position = Vector2( 240.794, 447.698 )
 
 

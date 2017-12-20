@@ -106,7 +106,7 @@ offset = Vector2( 18.7899, -11.429 )
 
 [node name="ShotPos" type="Position2D" parent="."]
 
-position = Vector2( 40.6794, -17.2403 )
+position = Vector2( 38.3183, -16.1292 )
 
 [node name="ShootTime" type="Timer" parent="."]
 
