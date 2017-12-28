@@ -121,6 +121,6 @@ position = Vector2( 501.359, 449.438 )
 
 [node name="M4A4" parent="." instance=ExtResource( 5 )]
 
-position = Vector2( 240.794, 447.698 )
+position = Vector2( 234.794, 425.698 )
 
 
