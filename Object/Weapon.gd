@@ -3,7 +3,6 @@ extends Area2D
 var canShoot = true
 var magazine = 0
 var clip = magazine
-var taken = false
 var player = null
 var texture = null
 var accuracy = 0
@@ -29,12 +28,6 @@ func get_clip():
 
 func set_clip(cant):
 	clip = cant
-
-func get_taken():
-	return taken
-
-func set_taken(b):
-	taken = b
 
 func get_player():
 	return player
