@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
-[ext_resource path="res://Object/Pistol.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Object/M4A4.tscn" type="PackedScene" id=2]
 
 [sub_resource type="GDScript" id=1]
 
@@ -13,14 +13,31 @@ var velocity = Vector2()
 var FLOOR_SPEED = 200
 var AIR_SPEED = 150
 var JUMP = 500
+enum STATES {RUN,JUMP,FALL,ROLL}
+var state
 
 func _ready():
 	set_physics_process(true)
 	set_process_input(true)
+	state = STATES.RUN
 	pass
 
 func _physics_process(delta):
 	move(delta)
+	states(delta)
+	pass
+
+func states(delta):
+	if(velocity.x!=0 and is_on_floor()):
+		if(get_node(\"AnimationPlayer\").current_animation == \"roll\"):
+			state = STATES.ROLL
+		else:
+			state = STATES.RUN
+	if(!is_on_floor()):
+		if(velocity.y<0):
+			state = STATES.JUMP
+		else:
+			state = STATES.FALL
 	pass
 
 func move(delta):
@@ -39,6 +56,9 @@ func _input(event):
 	#JUMP
 	if (event.is_action(\"ui_up\") and event.is_pressed() and !event.is_echo() and is_on_floor()):
 		velocity.y = -JUMP
+		get_node(\"AnimationPlayer\").play(\"jump\")
+	if (event.is_action(\"ui_down\") and event.is_pressed() and !event.is_echo() and is_on_floor()):
+		get_node(\"AnimationPlayer\").play(\"roll\")
 	if (event.is_action(\"reload\") and event.is_pressed()):
 		Global.curr_weapon.reload()
 	if (event.is_action(\"shoot\") and event.is_pressed()):
@@ -49,9 +69,71 @@ func _input(event):
 
 custom_solver_bias = 0.0
 radius = 22.2194
-height = 20.0
+height = 19.1482
 
-[node name="Player" type="KinematicBody2D" groups=[
+[sub_resource type="Animation" id=4]
+
+resource_name = "jump"
+length = 1.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.9, 1.1 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CollisionShape2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+
+resource_name = "roll"
+length = 2.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 1.8, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.2, 0.8 ), Vector2( 1.2, 0.8 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CollisionShape2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 1.8, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.6, 0.7 ), Vector2( 1.6, 0.7 ), Vector2( 1, 1 ) ]
+}
+
+[node name="Player" type="KinematicBody2D" index="0" groups=[
 "player",
 ]]
 
@@ -64,13 +146,17 @@ script = SubResource( 1 )
 [node name="Sprite" type="Sprite" parent="." index="0"]
 
 texture = ExtResource( 1 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
 
+position = Vector2( -0.233367, 0 )
 shape = SubResource( 2 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Camera2D" type="Camera2D" parent="." index="2"]
 
+position = Vector2( 285.872, -1.10803 )
 anchor_mode = 1
 rotating = false
 current = true
@@ -98,7 +184,7 @@ editor_draw_drag_margin = false
 
 position = Vector2( 34.9605, -1.66479 )
 
-[node name="Pistol" parent="GunPos" index="0" instance=ExtResource( 2 )]
+[node name="M4A4" parent="GunPos" index="0" instance=ExtResource( 2 )]
 
 [node name="GUI" type="CanvasLayer" parent="." index="4"]
 
@@ -175,5 +261,16 @@ size_flags_vertical = 4
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="5"]
+
+root_node = NodePath("..")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/jump = SubResource( 4 )
+anims/roll = SubResource( 3 )
+blend_times = [  ]
 
 
